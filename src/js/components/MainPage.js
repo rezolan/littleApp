@@ -1,27 +1,15 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import PropTypes from "prop-types";
 
 import '../../sass/components/main.scss';
 import UserCard from './UserCard';
 import Pagination from './Pagination';
 import SortingButtons from './SortingButtons';
-import Spinner from './Spinner';
 
-import { loadData } from "../actions";
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-
-const mapStateToProps = state => ({employees: state.employees});
-const mapDispatchToProps = dispatch => (bindActionCreators({ loadData }, dispatch));
-
-@connect(mapStateToProps, mapDispatchToProps)
 class MainPage extends Component {
 	state = {
-		dataLoad: true,
 		activeNumber: 1,
 		countOnPage: 10,
-		countItems: this.props.employees.length,
 		sortDirection: 0
 	};
 	changePage(activeNumber) {
@@ -36,34 +24,16 @@ class MainPage extends Component {
 	initialOrder() {
 		this.setState({sortDirection: 0})
 	}
-	componentDidMount() {
-		if(this.state.countItems === 0){
-			this.setState({dataLoad: false});
-			axios.get('http://localhost:3000/employees')
-				.then(result => {
-					return result.data;
-				})
-				.then(data => {
-					console.log(data);
-					this.props.loadData(data);
-					this.setState({dataLoad: true, countItems: data.length});
-				})
-				.catch(error => {
-					this.setState({dataLoad: true});
-					console.log(error);
-				})
-		}
-	}
+
 	render() {
 		return(
 			<div className="main">
-				{!this.state.dataLoad ? (
-					<Spinner dataLoad={this.state.dataLoad}/>
-					) :
+				{this.props.dataLoad ? (
 					<SortingButtons
 						ascendingOrder={::this.ascendingOrder}
 						descendingOrder={::this.descendingOrder}
-						initialOrder={::this.initialOrder}/>}
+						initialOrder={::this.initialOrder}/>
+					) : null}
 
 				<section className = "users">
 					{!this.state.sortDirection ? (
@@ -78,9 +48,9 @@ class MainPage extends Component {
 					)}
 				</section>
 
-				{this.state.dataLoad ? (
+				{this.props.dataLoad ? (
 					<Pagination
-						countBtns = { Math.round(this.state.countItems / this.state.countOnPage) }
+						countBtns = { Math.round(this.props.countItems / this.state.countOnPage) }
 						changePage = { ::this.changePage }
 						activeButton = { this.state.activeNumber }
 						countBtnsOnPage = { 5 }/>) : null}
@@ -90,7 +60,9 @@ class MainPage extends Component {
 }
 
 MainPage.propTypes = {
-	employees: PropTypes.array
+	employees: PropTypes.array.isRequired,
+	dataLoad: PropTypes.bool.isRequired,
+	countItems: PropTypes.number.isRequired
 };
 
 export default MainPage;

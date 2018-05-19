@@ -1,0 +1,20 @@
+.navigation{
+  background-color: #005fbd;
+  padding: 20px;
+  text-align: center;
+}
+.navigation li{
+  display: inline-block;
+  list-style-type: none;
+  padding: 10px;
+  color: white;
+  width: 150px;
+  text-align: center;
+}
+.navigation li>a{
+  list-style-type: none;
+  color: inherit;
+}
+.navigation li:hover{
+  font-weight: bold;
+}

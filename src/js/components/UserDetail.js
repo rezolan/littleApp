@@ -1,46 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
+import '../../sass/components/user-detail.scss';
 
-import { loadData } from "../actions";
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import axios from "axios/index";
-
-const mapStateToProps = state => ({employees: state.employees});
-const mapDispatchToProps = dispatch => (bindActionCreators({ loadData }, dispatch));
-
-@connect(mapStateToProps, mapDispatchToProps)
 class UserDetail extends Component{
-	constructor(props){
+	constructor(props) {
 		super(props);
 		this.state = {
-			userInfo: this.props.employees.filter(activeUser => activeUser.id ===  +this.props.match.params.id)[0]
+			userInfo: {...this.props.employees.filter(activeUser => activeUser.id ===  this.props.paramsId)[0]}
 		};
 	}
-	componentDidMount() {
-		if(this.state.userInfo === undefined){
-			this.setState({dataLoad: false});
-			axios.get('http://localhost:3000/employees')
-				.then(result => {
-					return result.data;
-				})
-				.then(data => {
-					this.props.loadData(data);
-					let userInfo = this.props.employees.filter(activeUser => activeUser.id ===  +this.props.match.params.id)[0];
-					this.setState({ userInfo: {...userInfo} })
-				})
-				.catch(error => {
-					console.log(error);
-				})
-		} else{
-			let userInfo = this.props.employees.filter(activeUser => activeUser.id ===  +this.props.match.params.id)[0];
-			this.setState({ userInfo: {...userInfo} })
+	componentWillReceiveProps(nextProps) {
+		if(nextProps.employees.length !== 0) {
+			this.setState({userInfo: {...nextProps.employees.filter(activeUser => activeUser.id ===  nextProps.paramsId)[0]}});
 		}
 	}
-	render(){
+	render() {
 		return (
 			<article className = 'user-detail'>
-				{this.state.userInfo !== undefined ? (
+				{Object.keys(this.state.userInfo).length !== 0 ? (
 					<div>
 						<h1>{ `${this.state.userInfo.first_name} ${this.state.userInfo.last_name}` }</h1>
 						<h2>{ this.state.userInfo.company }</h2>
@@ -48,9 +25,9 @@ class UserDetail extends Component{
 							src={ this.state.userInfo.avatar }
 							alt={ `${this.state.userInfo.first_name} ${this.state.userInfo.last_name}` }/>
 						<address>
-							<span>{ this.state.userInfo.adress }</span>
-							<span>{ this.state.userInfo.phone }</span>
-							<span>{ this.state.userInfo.email }</span>
+							<div>{ this.state.userInfo.adress }</div>
+							<div>{ this.state.userInfo.phone }</div>
+							<div>{ this.state.userInfo.email }</div>
 						</address>
 					</div>
 				) : null}
@@ -61,7 +38,8 @@ class UserDetail extends Component{
 }
 
 UserDetail.propTypes = {
-	employees: PropTypes.array
+	employees: PropTypes.array.isRequired,
+	paramsId: PropTypes.number
 };
 
 export default UserDetail;

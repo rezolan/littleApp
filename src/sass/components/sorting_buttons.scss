@@ -1,0 +1,17 @@
+.sorting-buttons{
+  padding: 10px 0;
+}
+.button-wrapper{
+  padding: 0 10px 10px 0;
+}
+.button-wrapper>button{
+  -webkit-appearance: unset;
+  background-color: #bbd0ff;
+  padding: 5px;
+  border: none;
+  display: inline-block;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+}

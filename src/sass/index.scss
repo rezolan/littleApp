@@ -1,0 +1,20 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+a{
+  text-decoration: none;
+  color: black;
+}
+button{
+  -webkit-appearance: unset;
+  background-color: #bbd0ff;
+  padding: 5px;
+  border: none;
+  display: inline-block;
+  margin-right: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+}

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import '../../sass/components/user_card.scss';
 
 class UserCard extends Component {
-	render(){
+	render() {
 		return (
 			<article className = 'user-card'>
 				<h3>
@@ -14,11 +14,6 @@ class UserCard extends Component {
 				<img
 					src={ this.props.userInfo.avatar }
 					alt={ `${this.props.userInfo.first_name} ${this.props.userInfo.last_name}` }/>
-				<address>
-					<span>{ this.props.userInfo.adress }</span>
-					<span>{ this.props.userInfo.phone }</span>
-					<span>{ this.props.userInfo.email }</span>
-				</address>
 			</article>
 		)
 	}
